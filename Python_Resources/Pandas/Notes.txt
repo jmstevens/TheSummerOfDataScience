@@ -1,0 +1,55 @@
+Chapter 4 NumPy
+Function                           Description
+
+array: Convert input data (list, tuple, array, or other sequence type) to an ndarray either by inferring a dtype or explicitly specifying a dtype. Copies the input data by default.
+
+
+asarray: Convert input to ndarray, but do not copy if the input is already an ndarray
+
+arange: Like the built-inrangebut returns an ndarray instead of a list.
+
+ones, ones_like: Produce an array of all 1’s with the given shape and dtype. ones_like takes another array and produces a ones array of the same shape and dtype.
+
+zeros, zeros_like: Like ones and ones_likebut producing arrays of 0’s instead
+
+
+empty, empty_like: Create new arrays by allocating new memory, but do not populate with any values like ones and zeros
+
+
+eye, identity: Create a square N x N identity matrix (1’s on the diagonal and 0’s elsewhere)
+
+
+
+abs, fabs
+sqrt
+square
+exp
+log, log10, log2, log1p
+sign
+ceil
+floor
+rint
+modf
+isnan
+isfinite, isinf
+cos, cosh, sin, sinh,
+tan, tanh
+arccos, arccosh, arcsin, arcsinh, arctan, arctanh
+logical_not
+Description
+Compute the absolute value element-wise for integer, floating point, or complex values. Usefabsas a faster alternative for non-complex-valued data
+Compute the square root of each element. Equivalent to arr ** 0.5
+Compute the square of each element. Equivalent to arr ** 2
+Compute the exponent ex of each element
+Natural logarithm (base e), log base 10, log base 2, and log(1 + x), respectively
+Compute the sign of each element: 1 (positive), 0 (zero), or -1 (negative)
+Compute the ceiling of each element, i.e. the smallest integer greater than or equal to each element
+Compute the floor of each element, i.e. the largest integer less than or equal to each element
+Round elements to the nearest integer, preserving the dtype
+Return fractional and integral parts of array as separate array
+Return boolean array indicating whether each value isNaN(Not a Number)
+Return boolean array indicating whether each element is finite (non-inf, non-NaN) or infinite, respectively
+Regular and hyperbolic trigonometric functions
+Inverse trigonometric functions
+Compute truth value of not x element-wise. Equivalent to -arr.
+

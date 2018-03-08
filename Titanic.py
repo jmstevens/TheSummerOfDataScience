@@ -1,9 +1,14 @@
 import pandas as pd
 
 # Read the data
-train = pd.read_csv('~/Titanic/Data/train.csv')
-test = pd.read_csv('~/Titanic/Data/test.csv')
-gender = pd.read_csv('~/Titanic/Data/gender_submission.csv')
+class Titanic:
+    def train(self):
+        return pd.read_csv('~/Titanic/Data/train.csv')
+    def test(self):
+        return pd.read_csv('~/Titanic/Data/test.csv')
+    def gender(self):
+        return pd.read_csv('~/Titanic/Data/gender_submission.csv')
 
-print('training set is loaded')
-print(train)
+
+
+
