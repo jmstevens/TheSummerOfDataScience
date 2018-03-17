@@ -18,13 +18,15 @@ class Titanic:
         par_dir = cwd.split('Titanic/')[0] # path to parent directory
         report_list = os.listdir(par_dir + '/Data/')
         self.files = report_list
+        
     def train(self):
         return pd.read_csv('~/Titanic/Data/train.csv')
+
     def test(self):
         return pd.read_csv('~/Titanic/Data/test.csv')
+
     def gender(self):
         return pd.read_sv('~/Titanic/Data/gender_submission.csv')
-    def describe(self):
 
 print(Titanic().files)
 
