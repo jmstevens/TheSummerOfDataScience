@@ -1,15 +1,13 @@
 import numpy as np
 import pandas as pd
-from sklearn.cross_validation import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
-from sklearn import tree
-import numpy as np
-import pandas as pd
+#from sklearn.cross_validation import train_test_split
+#from sklearn.tree import DecisionTreeClassifier
+#from sklearn.metrics import accuracy_score
+#from sklearn import tree
 # from sklearn.cross_validation import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
-from sklearn import tree
+#from sklearn.tree import DecisionTreeClassifier
+#from sklearn.metrics import accuracy_score
+#from sklearn import tree
 import os
 # Read the data
 class Titanic:
@@ -28,10 +26,14 @@ class Titanic:
     def gender(self):
         return pd.read_sv('~/Titanic/Data/gender_submission.csv')
 
-print(Titanic().files)
+#print(Titanic().files)
 
-X = Titanic().train().drop(['Survived','Name','Ticket','Embarked','Cabin'],axis=1)
-y = Titanic().train()['Survived']
+for i in Titanic().train().columns.values.tolist():
+    print(i)
+    print(Titanic().train()[i].describe())
+
+X_train = Titanic().train().drop(['Survived','Name','Ticket','Embarked','Cabin'],axis=1)
+y_train = Titanic().train()['Survived']
 
 
 # clf_gini = DecisionTreeClassifier(criterion = "gini", random_state = 100,
