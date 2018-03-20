@@ -67,12 +67,12 @@ class Titanic(object):
         df = df.set_index(['PassengerId'])
         df.index.names = ['id']
         # Edit data types
-        # df[df['Sex'] == 'male'] = 0
-        # df[df['Sex'] == 'female'] = 1
-        df['Survived'] = df.Survived.astype('category')
-        df['Pclass'] = df.Pclass.astype('category')
-        df['Sex'] = df.Sex.astype('category')
-        df['Embarked'] = df.Embarked.astype('category')
+        df[df['Sex'] == 'male'] = 0
+        df[df['Sex'] == 'female'] = 1
+        # df['Survived'] = df.Survived.astype('category')
+        # df['Pclass'] = df.Pclass.astype('category')
+        # df['Sex'] = df.Sex.astype('category')
+        # df['Embarked'] = df.Embarked.astype('category')
 
         # Add Titles
         df['Family_Size']=df['SibSp']+df['Parch']
@@ -88,29 +88,76 @@ class Titanic(object):
         return pd.read_csv('~/Titanic/Data/test.csv')
 
     def gender(self):
-        return pd.read_sv('~/Titanic/Data/gender_submission.csv')
+        return pd.read_csv('~/Titanic/Data/gender_submission.csv')
 
 print(yellow(Titanic().__doc__))
 train = Titanic().train()
 
-print(yellow(train.head()))
-for i in Titanic().train().columns.values.tolist():
-    print(cyan(i))
-    print(green(Titanic().train()[i].describe()))
-# [print(red(i)) for i in train['SibSp'].tolist()]
-# Find group by survivability
-print(cyan(train.groupby(['Survived','Sex']).mean()))
-print(cyan(train.groupby(['Survived','Sex','Pclass']).count()))
-
-# ggplot(data=train, x='Age', y='')
-# X_train = Titanic().train().dropna().drop(['Survived','Name'],axis=1).dropna()
-# y_train = Titanic().train().draopna()['Survived']
-
-print(cyan("Begin data profiling"))
-# X_train.drop([''])
-
-
-# clf_gini = DecisionTreeClassifier(criterion = "gini", random_state = 100,
-#                                max_depth=3, min_samples_leaf=5)
+# print(yellow(train.head()))
+# for i in Titanic().train().columns.values.tolist():
+#     print(cyan(i))
+#     print(green(Titanic().train()[i].astype('category').describe()))
 #
-# clf_gini.fit(X,y)
+# print(cyan(train.groupby(['Survived','Sex']).mean()))
+# print(cyan(train.groupby(['Survived','Sex','Pclass']).count()))
+
+#matplotlib inline
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import statsmodels.formula.api as smf
+from statsmodels.graphics.gofplots import ProbPlot
+plt.style.use('seaborn') # pretty matplotlib plots
+plt.rc('font', size=14)
+plt.rc('figure', titlesize=18)
+plt.rc('axes', labelsize=15)
+plt.rc('axes', titlesize=18)
+
+model_f = 'Survived ~ Sex + \
+                 Pclass + \
+                 Age + \
+                 SibSp + \
+                 Parch + \
+                 Ticket + \
+                 Fare + \
+                 Family_Size + \
+                 Fare_Per_Person'
+model = smf.ols(formula=model_f, data=train)
+model_fit = model.fit()
+
+# fitted values (need a constant term for intercept)
+model_fitted_y = model_fit.fittedvalues
+# model residuals
+model_residuals = model_fit.resid
+# print(model_residuals)
+# normalized residuals
+model_norm_residuals = model_fit.get_influence().resid_studentized_internal
+#absolute squared normalized residuals
+model_norm_residuals_abs_sqrt = np.sqrt(np.abs(model_norm_residuals))
+# absolute residuals
+model_abs_resid = np.abs(model_residuals)
+# leverage, from statsmodels internals
+model_leverage = model_fit.get_influence().hat_matrix_diag
+# cook's distance, from statsmodels internals
+model_cooks = model_fit.get_influence().cooks_distance[0]
+plot_lm_1 = plt.figure(1)
+plot_lm_1.set_figheight(8)
+plot_lm_1.set_figwidth(12)
+plot_lm_1.axes[0] = sns.residplot(model_fitted_y, 'Survived', data=train,
+                          lowess=True,
+                          scatter_kws={'alpha': 0.5},
+                          line_kws={'color': 'red', 'lw': 1, 'alpha': 0.8})
+plot_lm_1.axes[0].set_title('Residuals vs Fitted')
+plot_lm_1.axes[0].set_xlabel('Fitted values')
+plot_lm_1.axes[0].set_ylabel('Residuals')
+
+
+# annotations
+abs_resid = model_abs_resid.sort_values(ascending=False)
+abs_resid_top_3 = abs_resid[:3]
+for i in abs_resid_top_3.index:
+    plot_lm_1.axes[0].annotate(i,
+                               xy=(model_fitted_y[i],
+                                   model_residuals[i]));
+plt.show()
