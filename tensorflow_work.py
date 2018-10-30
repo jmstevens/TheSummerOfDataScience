@@ -6,11 +6,11 @@ from functools import partial
 import numpy as np
 
 n_inputs = 28*28
-n_hidden_1 = 300
-n_hidden_2 = 300
-n_hidden_3 = 300
-n_hidden_4 = 300
-n_hidden_5 = 300
+n_hidden_1 = 100
+n_hidden_2 = 100
+n_hidden_3 = 100
+n_hidden_4 = 100
+n_hidden_5 = 100
 n_hidden_6 = 100
 n_outputs = 10
 
@@ -22,9 +22,9 @@ y = tf.placeholder(tf.int64, shape=(None), name = "y")
 # training = tf.placeholder_with_default(False, shape=(), name='training')
 norm_penalty = 0.001
 learning_rate = 0.01
-dropout_rate = 0.1
+dropout_rate = 0.9
 n_epochs = 1000
-batch_size = 100
+batch_size = 50
 
 training = tf.placeholder_with_default(False, shape=(), name='training')
 X_drop = dropout(X, dropout_rate, is_training=training)
