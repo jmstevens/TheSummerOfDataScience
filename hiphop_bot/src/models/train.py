@@ -8,8 +8,9 @@ import time
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from gtts import gTTS
+import os
 # from tensorflow.python import debug as tf_debug
-
+from pygame import mixer
 
 
 data_dir = "../data"
@@ -77,7 +78,11 @@ def sample_text(sess, data_provider, iteration):
     model = RNNModel(data_provider.vocabulary_size, batch_size=1, sequence_length=1, hidden_layer_size=HIDDEN_LAYER_SIZE, cells_size=CELLS_SIZE, training=False)
     text = model.sample(sess, data_provider.chars, data_provider.vocabulary, TEXT_SAMPLE_LENGTH).encode("utf-8")
     print(str(text))
-    gTTS(text=str(text), lang='en')
+    voice = gTTS(text=str(text), lang='en')
+    voice.save("preview.mp3")
+    mixer.init()
+    mixer.music.load('preview.mp3')
+    mixer.music.play()
     output = open(output_file, "a")
     output.write("Iteration: " + str(iteration) + "\n")
     output.write(str(text) + "\n")
