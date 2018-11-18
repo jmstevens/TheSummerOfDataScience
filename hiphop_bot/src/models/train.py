@@ -76,8 +76,8 @@ def rnn_run():
 def sample_text(sess, data_provider, iteration):
     model = RNNModel(data_provider.vocabulary_size, batch_size=1, sequence_length=1, hidden_layer_size=HIDDEN_LAYER_SIZE, cells_size=CELLS_SIZE, training=False)
     text = model.sample(sess, data_provider.chars, data_provider.vocabulary, TEXT_SAMPLE_LENGTH).encode("utf-8")
-    print(text)
-
+    print(str(text))
+    gTTS(text=str(text), lang='en')
     output = open(output_file, "a")
     output.write("Iteration: " + str(iteration) + "\n")
     output.write(str(text) + "\n")
